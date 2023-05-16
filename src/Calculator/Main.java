@@ -12,7 +12,7 @@ public class Main {
 
     public static void main(String args[]) throws Exception {
         Scanner scan = new Scanner(System.in);
-        System.out.print("Input number1 math.operator number2: ");
+        System.out.print("Введите число1 потом математический оператор (+ - /) число2: ");
         String input = scan.nextLine();
 
         convert(input);
