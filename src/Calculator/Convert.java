@@ -1,6 +1,7 @@
 package Calculator;
 
 import java.util.Arrays;
+import java.util.InputMismatchException;
 
 import static Calculator.Main.firstNumber;
 import static Calculator.Main.secondNumber;
@@ -32,7 +33,7 @@ public class Convert {
                 str_secondNumber = str_secondNumber.trim();
 
                 if (des.indexOf(str_firstNumber.charAt(0)) >= 0) {
-                    firstNumber = convertToDecimal(str_firstNumber);
+                    firstNumber = romanToNumber(str_firstNumber);
                     firstRomanNumber = true;
                 }
                 else {
@@ -45,7 +46,7 @@ public class Convert {
                 }
 
                 if (des.indexOf(str_secondNumber.charAt(0)) >= 0) {
-                    secondNumber = convertToDecimal(str_secondNumber);
+                    secondNumber = romanToNumber(str_secondNumber);
                     secondRomanNumber = true;
                 }
                 else {
@@ -60,46 +61,8 @@ public class Convert {
         }
 
     }
-
-    public static int convertToDecimal(String romanNumeral) {
-        int decimalNum = 0;
-
-        romanNumeral = romanNumeral.toUpperCase();
-
-        int l = romanNumeral.length();
-        int num = 0;
-        int previousnum = 0;
-        for (int i = l - 1; i >= 0; i--) {
-            char x = romanNumeral.charAt(i);
-            x = Character.toUpperCase(x);
-            switch (x) {
-                case 'I':
-                    previousnum = num;
-                    num = 1;
-                    break;
-                case 'V':
-                    previousnum = num;
-                    num = 5;
-                    break;
-                case 'X':
-                    previousnum = num;
-                    num = 10;
-                    break;
-            }
-            if (num < previousnum) {
-                decimalNum = decimalNum - num;
-            }
-            else
-                decimalNum = decimalNum + num;
-        }
-
-        return decimalNum;
-    }
-
-    public static String convertToRoman(int num) {
-
-        int[] values = { 1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1 };
-        String[] romanLiterals = {"O", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII", "XIII", "XIV", "XV", "XVI", "XVII", "XVIII", "XIX", "XX",
+    static String convertNumToRoman(int numArabian) {
+        String[] roman = {"O", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII", "XIII", "XIV", "XV", "XVI", "XVII", "XVIII", "XIX", "XX",
                 "XXI", "XXII", "XXIII", "XXIV", "XXV", "XXVI", "XXVII", "XXVIII", "XXIX", "XXX", "XXXI", "XXXII", "XXXIII", "XXXIV", "XXXV", "XXXVI", "XXXVII", "XXXVIII", "XXXIX", "XL",
                 "XLI", "XLII", "XLIII", "XLIV", "XLV", "XLVI", "XLVII", "XLVIII", "XLIX", "L", "LI", "LII", "LIII", "LIV", "LV", "LVI", "LVII", "LVIII", "LIX", "LX",
                 "LXI", "LXII", "LXIII", "LXIV", "LXV", "LXVI", "LXVII", "LXVIII", "LXIX", "LXX",
@@ -107,22 +70,37 @@ public class Convert {
                 "LXXXI", "LXXXII", "LXXXIII", "LXXXIV", "LXXXV", "LXXXVI", "LXXXVII", "LXXXVIII", "LXXXIX", "XC",
                 "XCI", "XCII", "XCIII", "XCIV", "XCV", "XCVI", "XCVII", "XCVIII", "XCIX", "C"
         };
-//        final String s = romanLiterals[num];
-//        return s;
-
-//        String[] romanLiterals = {
-//                "M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"
-//        };
-
-        StringBuilder roman = new StringBuilder();
-
-        for (int i = 0; i < values.length; i++) {
-            while (num >= values[i]) {
-                num -= values[i];
-                roman.append(romanLiterals[i]);
-            }
-        }
-
-        return roman.toString();
+        final String s = roman[numArabian];
+        return s;
     }
+    private static int romanToNumber (String roman) {
+        try {
+            if (roman.equals("I")) {
+                return 1;
+            } else if (roman.equals("II")) {
+                return 2;
+            } else if (roman.equals("III")) {
+                return 3;
+            } else if (roman.equals("IV")) {
+                return 4;
+            } else if (roman.equals("V")) {
+                return 5;
+            } else if (roman.equals("VI")) {
+                return 6;
+            } else if (roman.equals("VII")) {
+                return 7;
+            } else if (roman.equals("VIII")) {
+                return 8;
+            } else if (roman.equals("IX")) {
+                return 9;
+            } else if (roman.equals("X")) {
+                return 10;
+            }
+        } catch (InputMismatchException e) {
+            throw new InputMismatchException("Неверный формат данных");
+        }
+        return -1;
+    }
+
+
 }

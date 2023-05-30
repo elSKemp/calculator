@@ -3,8 +3,9 @@ package Calculator; // пакет Calculator , где лежат классы Co
 
 import java.util.InputMismatchException; // импорт встроенной библиотеки , проверяет на существование запрашиваемого элемента
 import java.util.Scanner;  // импорт встроенной библиотеки , сканер вводимых строк
-import static Calculator.Convert.convert; // импорт из пакета Calculator - класс Convert - метод convert
-import static Calculator.Convert.convertToRoman; // импорт из пакета Calculator - класс Convert - метод convertToRoman
+
+import static Calculator.Convert.*;
+
 
 public class Main { // объявляем класс Main - название токое же как файла Main.java
     static char operator; // инициализируем переменную operator типа char (символьный тип)
@@ -21,31 +22,26 @@ public class Main { // объявляем класс Main - название т�
 
         if (result != null ) { // обявляем ветвление , если переменная result не равна null (ничто), то
             if (firstRomanNumber == true & secondRomanNumber == true) { // если (первое римское число firstRomanNumber равно истина) и (второе римское число secondRomanNumber равно истина) то
-                System.out.println("Ответ: " + convertToRoman(result)); // в консоль выводится Ответ: результат выполнения метода convertToRoman
+                System.out.println("Ответ: " + convertNumToRoman(result)); // в консоль выводится Ответ: результат выполнения метода convertToRoman
             } else { // в другом случае (первое римское число firstRomanNumber равно ложь) и (второе римское число secondRomanNumber равно ложь), то есть это не римские числа)
                 System.out.println("Ответ: " + result);  // в консоль выводится Ответ: целочисленная переменная result
             }
         }
         if (result <= 0) { // если переменная result меньеш или равна 0, то
             if (firstRomanNumber == true & secondRomanNumber == true) { // если (первое римское число firstRomanNumber равно истина) и (второе римское число secondRomanNumber равно истина) то
-                throw new Exception("Отрицательный результат вычитания римских чисел либо результат 0"); // кидаем исключение 'Отрицательный результат вычитания римских чисел либо результат 0'
+                throw new Exception("Результат 0 либо отрицательный результат вычитания римских чисел"); // кидаем исключение 'Отрицательный результат вычитания римских чисел либо результат 0'
 
             }
         }
     }
 
     public static Integer calculate() throws Exception { // объявляем метод calculate, он кидает исключение Exception (есть такой класс встроенный в java)
-        Integer result = null;
+        Integer result = null; // инициализируем переменную result типа Integer (целочисленный тип обертка над int)
 
         if (firstRomanNumber == secondRomanNumber) {
-            if (firstNumber < 0 || firstNumber > 10) {
-                throw new Exception("Первое  число должно быть от 0 до 10");
+            if ((firstNumber < 0 || firstNumber > 10) || (secondNumber < 0 || secondNumber > 10)) {
+                throw new Exception("Первое или второе число должно быть от 0 до 10");
             }
-
-            if (secondNumber < 0 || secondNumber > 10) {
-                throw new Exception("Второе  число должно быть от 0 до 10");
-            }
-
             switch (operator) {
                 case '+':
                     result = firstNumber + secondNumber;
@@ -64,7 +60,7 @@ public class Main { // объявляем класс Main - название т�
                         result = firstNumber / secondNumber;
                     } catch (ArithmeticException | InputMismatchException e) {
                         System.out.println("Exception : " + e);
-                        System.out.println("Only integer non-zero parameters allowed");
+                        System.out.println("Ошибка - деление на 0");
 
                         break;
                     }
@@ -73,12 +69,12 @@ public class Main { // объявляем класс Main - название т�
 
                 // operator doesn't match any case constant (+, -, *, /)
                 default:
-                    throw new IllegalArgumentException("Не верный знак операции");
+                    throw new IllegalArgumentException("Неверный знак операции, должно быть  (+, -, *, /)");
             }
 
             return result;
         } else {
-            throw new Exception("Оба числа должны быть римскими (IiVvXxLlCcDdMm)");
+            throw new Exception("Оба числа должны быть римскими (IiVvXxLlCcDdMm) от 0 до 10");
         }
     }
 }
