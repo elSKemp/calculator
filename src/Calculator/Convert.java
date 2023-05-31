@@ -1,28 +1,28 @@
 package Calculator;
 
-import java.util.Arrays;
-import java.util.InputMismatchException;
+import java.util.Arrays; // импорт втроенной в java (jdk) библиотеки для работы с массивами Arrays
+import java.util.InputMismatchException;// импорт втроенной в java (jdk) библиотеки для работы с исключением InputMismatchException (несоответствие введеных данных запрашиваемым)
 
-import static Calculator.Main.firstNumber;
-import static Calculator.Main.secondNumber;
-import static Calculator.Main.firstRomanNumber;
-import static Calculator.Main.secondRomanNumber;
-import static Calculator.Main.operator;
+import static Calculator.Main.firstNumber; // импорт перемнной firstNumber из класса Main
+import static Calculator.Main.secondNumber; // импорт перемнной secondNumber из класса Main
+import static Calculator.Main.firstRomanNumber; // импорт перемнной firstRomanNumber из класса Main
+import static Calculator.Main.secondRomanNumber; // импорт перемнной secondRomanNumber из класса Main
+import static Calculator.Main.operator; // импорт перемнной operator из класса Main
 
-public class Convert {
-    public static void convert(String input) {
+public class Convert { // в этом методе , обрабатывается логика конвертации и парсинга (обработки) введенных данных из консоли
+    public static void convert(String input) { // объявляем метод convert (нижний регистр как в дргуих методах, то есть с маленькой буквы), который ничего не возвращает ( ключевое слово void), на вход ему подается переменнвя input типа String
 
-        char[] chars = input.toCharArray();
+        char[] chars = input.toCharArray();  // инициализируем массив символов chars, в него записываем результат выполнения метода toCharArray(встроен в jdk, находится в Arrays) над строковой переменной input, то есть этот метод преобразовывает в массив символов введенную в консоли строку
 
-        int charsLength = chars.length;
+        int charsLength = chars.length; // инициализируем переменную charsLength типа int, в которую складывается длинна строки chars (length - это метод вычисляет длинну строки он встроен в jdk)
 
-        String op = "+-*/";
-        String des = "IiVvXxLlCcDdMm";
+        String op = "+-*/"; // инициализируем строку op, в нее входят операторы
+        String des = "IVX";  // инициализируем строку des, в нее входят римские числа до 10
 
-        for (int i = 0; i < charsLength; i++) {
+        for (int i = 0; i < charsLength; i++) { // объявляем цикл for, он итерирует (пробегает циклически) переменную i столько раз сколько равно длинне строки charsLength со счетчиком i++ (означает что счетчик с каждой итерацией будет увеличиваться на 1)
 
-            if (op.indexOf(chars[i]) >= 0) {
-                operator = chars[i];
+            if (op.indexOf(chars[i]) >= 0) {  // условие логического ветвления if (если)
+                operator = chars[i];  // присваиваем переменной  operator итый индекс массива (или значение итого индекса массива)
 
                 char[] chr_firstNumber = Arrays.copyOfRange(chars, 0, i);
                 String str_firstNumber = String.valueOf(chr_firstNumber);
@@ -32,11 +32,11 @@ public class Convert {
                 String str_secondNumber = String.valueOf(chr_secondNumber);
                 str_secondNumber = str_secondNumber.trim();
 
-                if (des.indexOf(str_firstNumber.charAt(0)) >= 0) {
-                    firstNumber = romanToNumber(str_firstNumber);
-                    firstRomanNumber = true;
+                if (des.indexOf(str_firstNumber.charAt(0)) >= 0) {  // условие логического ветвления if (если)
+                    firstNumber = romanToNumber(str_firstNumber);  // здесь уже в переменную firstNumber записывается результат выполнения метода romanToNumber (метод конвертации римских чиселв арабские)
+                    firstRomanNumber = true;  // переменной firstRomanNumber присваивается значение true (истина)
                 }
-                else {
+                else { // условие логического ветвления else (или)
                     try {
                         firstNumber = Integer.parseInt(str_firstNumber);
                     }
@@ -61,19 +61,12 @@ public class Convert {
         }
 
     }
-    static String convertNumToRoman(int numArabian) {
-        String[] roman = {"O", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII", "XIII", "XIV", "XV", "XVI", "XVII", "XVIII", "XIX", "XX",
-                "XXI", "XXII", "XXIII", "XXIV", "XXV", "XXVI", "XXVII", "XXVIII", "XXIX", "XXX", "XXXI", "XXXII", "XXXIII", "XXXIV", "XXXV", "XXXVI", "XXXVII", "XXXVIII", "XXXIX", "XL",
-                "XLI", "XLII", "XLIII", "XLIV", "XLV", "XLVI", "XLVII", "XLVIII", "XLIX", "L", "LI", "LII", "LIII", "LIV", "LV", "LVI", "LVII", "LVIII", "LIX", "LX",
-                "LXI", "LXII", "LXIII", "LXIV", "LXV", "LXVI", "LXVII", "LXVIII", "LXIX", "LXX",
-                "LXXI", "LXXII", "LXXIII", "LXXIV", "LXXV", "LXXVI", "LXXVII", "LXXVIII", "LXXIX", "LXXX",
-                "LXXXI", "LXXXII", "LXXXIII", "LXXXIV", "LXXXV", "LXXXVI", "LXXXVII", "LXXXVIII", "LXXXIX", "XC",
-                "XCI", "XCII", "XCIII", "XCIV", "XCV", "XCVI", "XCVII", "XCVIII", "XCIX", "C"
-        };
+    static String convertNumToRoman(int numArabian) { // объявляем метод convertNumToRoman он используется в классе Main, на вход ему подается переменная типа int
+        String[] roman = {"O", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"  }; // инициализируем массив стрингов roman
         final String s = roman[numArabian];
         return s;
     }
-    private static int romanToNumber (String roman) {
+    private static int romanToNumber (String roman) { // объявляем метод romanToNumber, в нем переводятся римские в арабские
         try {
             if (roman.equals("I")) {
                 return 1;
