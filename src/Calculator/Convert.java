@@ -37,24 +37,24 @@ public class Convert { // в этом методе , обрабатываетс�
                     firstRomanNumber = true;  // переменной firstRomanNumber присваивается значение true (истина)
                 }
                 else { // условие логического ветвления else (или)
-                    try {
-                        firstNumber = Integer.parseInt(str_firstNumber);
-                    }
-                    catch (NumberFormatException e) {
-                        firstNumber = -1;
+                    try { // открывается блок try
+                        firstNumber = Integer.parseInt(str_firstNumber); // в переменную firstNumber присваиваем результат выполнения метода parseInt (встроенный в jdk метод, точнее это метода класса обертки Integer), на вход методу подается переменная str_firstNumber типа String
+                    } // закрываем  блок try
+                    catch (NumberFormatException e) {  // ловим исключение
+                        firstNumber = -1; //  в переменную firstNumber присваиваем -1
                     }
                 }
 
-                if (des.indexOf(str_secondNumber.charAt(0)) >= 0) {
-                    secondNumber = romanToNumber(str_secondNumber);
-                    secondRomanNumber = true;
+                if (des.indexOf(str_secondNumber.charAt(0)) >= 0) {  // условие логического ветвления if (если)
+                    secondNumber = romanToNumber(str_secondNumber);  // здесь уже в переменную secondNumber записывается результат выполнения метода romanToNumber (метод конвертации римских чиселв арабские)
+                    secondRomanNumber = true; // переменной secondRomanNumber присваивается значение true (истина)
                 }
-                else {
-                    try {
-                        secondNumber = Integer.parseInt(str_secondNumber);
+                else { // условие логического ветвления else (или)
+                    try { // открывается блок try
+                        secondNumber = Integer.parseInt(str_secondNumber); // в переменную secondNumber присваиваем результат выполнения метода parseInt (встроенный в jdk метод, точнее это метода класса обертки Integer), на вход методу подается переменная str_secondNumber типа String
                     }
-                    catch (NumberFormatException e) {
-                        secondNumber = -1;
+                    catch (NumberFormatException e) { // ловим исключение
+                        secondNumber = -1;  //  в переменную secondNumber присваиваем -1
                     }
                 }
             }
@@ -63,14 +63,14 @@ public class Convert { // в этом методе , обрабатываетс�
     }
     static String convertNumToRoman(int numArabian) { // объявляем метод convertNumToRoman он используется в классе Main, на вход ему подается переменная типа int
         String[] roman = {"O", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"  }; // инициализируем массив стрингов roman
-        final String s = roman[numArabian];
+        final String s = roman[numArabian];  // инициализируем финализированную переменную s типа String
         return s;
     }
     private static int romanToNumber (String roman) { // объявляем метод romanToNumber, в нем переводятся римские в арабские
-        try {
-            if (roman.equals("I")) {
+        try { // открывается блок try
+            if (roman.equals("I")) { // условие логического ветвления if (если), римское число = I, возвращаемое значение =1
                 return 1;
-            } else if (roman.equals("II")) {
+            } else if (roman.equals("II")) { // условие логического ветвления if (если), римское число = II, возвращаемое значение =2 и тд
                 return 2;
             } else if (roman.equals("III")) {
                 return 3;
@@ -89,8 +89,8 @@ public class Convert { // в этом методе , обрабатываетс�
             } else if (roman.equals("X")) {
                 return 10;
             }
-        } catch (InputMismatchException e) {
-            throw new InputMismatchException("Неверный формат данных");
+        } catch (InputMismatchException e) { // ловим исключение
+            throw new InputMismatchException("Неверный формат данных"); // кидаем исключение с текстом "Неверный формат данных"
         }
         return -1;
     }
