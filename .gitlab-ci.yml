@@ -1,0 +1,60 @@
+include:
+  - project: $TSR_PROJECT_TEMPLATE
+    ref: $TSR_REF_TEMPLATE
+    file:
+      - 'template.yaml'
+      - 'projects/${CI_PROJECT_NAME}.yaml'
+
+#maven release-notes:
+#  extends: .maven-template
+#  stage: .post
+#  script:
+#    - $MVN org.sahli.asciidoc.confluence.publisher:asciidoc-confluence-publisher-maven-plugin:publish -pl release-notes
+#  when: manual
+#  rules:
+#    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+prepare_job:
+  stage: .pre
+  image: alpine:latest
+  before_script:
+    - if [ -f "${CUSTOM_CA_CERT}" ]; then
+      cat "${CUSTOM_CA_CERT}" >> /etc/ssl/certs/ca-certificates.crt;
+      fi
+  script:
+    - apk add curl jq
+    - 'curl -H "elSKempToken: 28HR2zES_NayzeMZXDY9" --insecure  "$CI_API_V4_URL/projects/$CI_PROJECT_ID/repository/changelog?version=$CI_COMMIT_TAG" | jq -r > release_notes.md'
+
+  artifacts:
+    paths:
+      - release-notes
+
+release_job:
+  stage: .post
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  needs:
+    - job: prepare_job
+      artifacts: true
+  before_script:
+    - if [ -f "${CUSTOM_CA_CERT}" ]; then
+      cat "${CUSTOM_CA_CERT}" >> /etc/ssl/certs/ca-certificates.crt;
+      fi
+
+  script:
+    - echo "Creating release notes"
+    - export NEW_TAG="$(cat release_notes.md| cut -d ':' -f 2 | cut -c 1-7)"
+#    - echo $NEW_TAG > new_tag_test.txt
+
+  release:
+    name: 'Release $CI_COMMIT_TAG'
+    description: release_notes.md
+    tag_name: '$CI_COMMIT_TAG'
+    ref: '$CI_COMMIT_SHA'
+    assets:
+      links:
+        - name: 'Container Image $CI_COMMIT_TAG'
+          url: "https://$CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA"
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "api" || $CI_COMMIT_BRANCH =~ /^develop.*/ || $CI_COMMIT_BRANCH =~ /^develop_release_notes_test.*/ || $CI_COMMIT_BRANCH =~ /^release_notes_test.*/ || $CI_PIPELINE_SOURCE == "pipeline"
+      when: never
+    - when: on_success
